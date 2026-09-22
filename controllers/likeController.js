@@ -119,6 +119,36 @@ exports.updateTodo = async (req, res) => {
   }
 };
 
+// Delete todo by ID
+exports.deleteTodo = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const response = await Todo.findByIdAndDelete(id);
+
+    if (!response) {
+      return res.status(404).json({
+        success: false,
+        data: null,
+        message: "Todo not found",
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      data: response,
+      message: "Todo deleted successfully",
+    });
+  } catch (error) {
+    console.error(error);
+
+    res.status(500).json({
+      success: false,
+      data: null,
+      message: "Internal server error",
+    });
+  }
+};
 exports.likePost = async (req, res) => {
   try {
     //fetch data from req body
